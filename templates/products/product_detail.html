@@ -1,0 +1,272 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>{{ product.title }}</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+<!-- БЛОК КОНТЕНТА start -->
+{% block content %}
+
+<!-- breadcrumb start -->
+<div class="breadcrumb">
+    <div class="container">
+        <ul class="list-unstyled d-flex align-items-center m-0">
+            <li><a href="{% url 'home' %}">Главная страница</a></li>
+            <li>
+                <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                        <path
+                            d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                            fill="#000" />
+                    </g>
+                </svg>
+            </li>
+            <li><a href="{% url 'products' %}">Каталог</a></li>
+            <li>
+                <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                        <path
+                            d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                            fill="#000" />
+                    </g>
+                </svg>
+            </li>
+            <li>{{ product.name }}</li>
+        </ul>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+        <main id="MainContent" class="content-for-layout">
+            <div class="product-page mt-100">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12 col-12">
+                            <div class="product-gallery product-gallery-vertical d-flex">
+                                <div class="product-img-large">
+                                    <div class="img-large-slider common-slider" data-slick='{
+                                        "slidesToShow": 1,
+                                        "slidesToScroll": 1,
+                                        "dots": false,
+                                        "arrows": false,
+                                        "asNavFor": ".img-thumb-slider"
+                                    }'>
+                                        <div class="img-large-wrapper">
+                                            <a href="{{ product.main_image.url}}" data-fancybox="gallery">
+                                                <img src="{{ product.main_image.url}}" alt="img">
+                                            </a>
+                                        </div>
+                                        {% for product_img in images %}
+                                        <div class="img-large-wrapper">
+                                            <a href="{{ product_img.image.url }}" data-fancybox="gallery">
+                                                <img src="{{ product_img.image.url }}" alt="img">
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+
+                                <div class="product-img-thumb">
+                                    <div class="qv-thumb-slider img-thumb-slider common-slider" data-vertical-slider="true" data-slick='{
+                                        "slidesToShow": 5, 
+                                        "slidesToScroll": 1,
+                                        "dots": false,
+                                        "arrows": true,
+                                        "infinite": false,
+                                        "speed": 300,
+                                        "cssEase": "ease",
+                                        "focusOnSelect": true,
+                                        "swipeToSlide": true,
+                                        "asNavFor": ".img-large-slider"
+                                    }'>
+                                        <div>
+                                            <div class="img-thumb-wrapper">
+                                                <img src="{{ product.main_image.url}}" alt="img">
+                                            </div>
+                                        </div>
+                                        {% for product_img_all in images %}
+                                        <div>
+                                            <div class="img-thumb-wrapper">
+                                                <img src="{{ product_img_all.image.url }}" alt="img">
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="activate-arrows show-arrows-always arrows-white d-none d-lg-flex justify-content-between mt-3"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-12 col-12">
+                            <div class="product-details ps-lg-4">
+                                <h2 class="product-title mb-3">{{ product.name }}</h2>
+                                <div class="product-sku product-meta mb-1">
+                                    <strong class="label">Артикул:</strong> {{ product.model_number }}
+                                </div>
+                                <div class="product-vendor product-meta mb-1">
+                                    <strong class="label">Производитель:</strong> LEGO
+                                </div>
+                                {% if product.collection %}
+                                <div class="product-vendor product-meta mb-1">
+                                    <strong class="label">Коллекция:</strong> {{product.collection}}
+                                {% endif %}
+                                </div>
+                                <div class="product-vendor product-meta mb-1">
+                                    <strong class="label">Возраст:</strong> {{product.age}}+
+                                </div>
+                                {% if product.elements %}
+                                <div class="product-vendor product-meta mb-3">
+                                    <strong class="label">Детали:</strong> {{product.elements}}шт
+                                </div>
+                                {% endif %}
+                                <div class="product-price-wrapper mb-4">
+                                    {% if discounts.discount_active %}
+                                    <span class="product-price regular-price">{{  discounts.discount_price }} BYN</span>
+                                    <del class="product-price compare-price ms-2">{{  discounts.price_no_discount }} BYN</del>
+                                    {% else %}
+                                    <span class="product-price regular-price">{{ product.price }} BYN</span>
+                                    {% endif %}
+                                </div>
+                                <form method="POST" action="{% url 'cart_adding' %}" id="form_buying_product">
+                                    {% csrf_token %}
+                                    <div class="misc d-flex align-items-end justify-content-between mt-4">
+                                        <div class="quantity d-flex align-items-center justify-content-between">
+                                            <input class="form-control" type="number" id="number" name="number" value="1" min="1">
+                                        </div>
+                                    </div>
+                                    <div class="product-form-buttons d-flex align-items-center justify-content-between mt-4">
+                                        <button type="submit" id="submit_btn" class="position-relative btn-atc btn-add-to-cart loader"
+                                                data-product_id = "{{ product.id }}"
+                                                data-name = "{{ product.name }}"
+                                                data-price = "{{ product.total_price }}">
+                                                ДОБАВИТЬ В КОРЗИНУ</button>
+                                        <a href="{% url 'add_to_wishlist' product.id %}" class="product-wishlist">
+                                            {% if product in user.wishlist.products.all %}
+                                               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                                  <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"/>
+                                                </svg>
+                                            {% else %}
+                                               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="black" class="bi bi-suit-heart" viewBox="0 0 16 16">
+                                                  <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+                                                </svg>
+                                            {% endif %}
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- product tab start -->
+            <div class="product-tab-section mt-100" data-aos="fade-up" data-aos-duration="700">
+                <div class="container">
+                    <div class="tab-list product-tab-list">
+                        <nav class="nav product-tab-nav">
+                            <a class="product-tab-link tab-link active" href="#pdescription" data-bs-toggle="tab">Описание</a>
+                        </nav>
+                    </div>
+                    <div class="tab-content product-tab-content">
+                        <div id="pdescription" class="tab-pane fade show active">
+                            <div class="row">
+                                <div class="col-lg-7 col-md-12 col-12">
+                                    <div class="desc-content">
+                                        <h4 class="heading_18 mb-3">{{ product.name }}</h4>
+                                        <p class="text_16 mb-4">{{ product.description }}</p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- product tab end -->
+            
+            <!-- you may also like start -->
+            <div class="featured-collection-section mt-100 home-section overflow-hidden">
+                <div class="container">
+                    <div class="section-header">
+                        <h2 class="section-heading">Рекомендации</h2>
+                    </div>
+
+                    <div class="product-container position-relative">
+                        <div class="common-slider" data-slick='{
+                        "slidesToShow": 4,
+                        "slidesToScroll": 1,
+                        "dots": false,
+                        "arrows": true,
+                        "responsive": [
+                        {
+                            "breakpoint": 1281,
+                            "settings": {
+                            "slidesToShow": 3
+                            }
+                        },
+                        {
+                            "breakpoint": 768,
+                            "settings": {
+                            "slidesToShow": 2
+                            }
+                        }
+                        ]
+                    }'>
+                    {% for other_product in other_product %}
+                    <div class="new-item" data-aos="fade-up" data-aos-duration="300">
+
+                        <div class="product-card">
+                            <div class="product-card-img">
+                                <a class="hover-switch" href="{{ other_product.get_href }}">
+                                    <img class="primary-img" src="{{ other_product.main_image.url}}"
+                                        alt="product-img">
+                                </a>
+
+                                 <div class="product-badge">
+                                    {% if other_product.discount.discount_active %}
+                                    <span class="badge-label badge-percentage rounded">-{{ other_product.discount.discount }}%</span>
+                                    {% endif %}
+                                </div>
+
+                                 <a href="{% url 'add_to_wishlist' other_product.id %}" class="wishlist-btn card-wishlist">
+                                    {% if other_product in user.wishlist.products.all %}
+                                         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="red" class="bi bi-suit-heart-fill" viewBox="0 0 16 16">
+                                          <path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1"/>
+                                        </svg>
+                                     {% else %}
+                                       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="black" class="bi bi-suit-heart" viewBox="0 0 16 16">
+                                          <path d="m8 6.236-.894-1.789c-.222-.443-.607-1.08-1.152-1.595C5.418 2.345 4.776 2 4 2 2.324 2 1 3.326 1 4.92c0 1.211.554 2.066 1.868 3.37.337.334.721.695 1.146 1.093C5.122 10.423 6.5 11.717 8 13.447c1.5-1.73 2.878-3.024 3.986-4.064.425-.398.81-.76 1.146-1.093C14.446 6.986 15 6.131 15 4.92 15 3.326 13.676 2 12 2c-.777 0-1.418.345-1.954.852-.545.515-.93 1.152-1.152 1.595L8 6.236zm.392 8.292a.513.513 0 0 1-.784 0c-1.601-1.902-3.05-3.262-4.243-4.381C1.3 8.208 0 6.989 0 4.92 0 2.755 1.79 1 4 1c1.6 0 2.719 1.05 3.404 2.008.26.365.458.716.596.992a7.55 7.55 0 0 1 .596-.992C9.281 2.049 10.4 1 12 1c2.21 0 4 1.755 4 3.92 0 2.069-1.3 3.288-3.365 5.227-1.193 1.12-2.642 2.48-4.243 4.38z"/>
+                                        </svg>
+                                    {% endif %}
+                                  </a>
+                            </div>
+                            <div class="product-card-details text-center">
+                                <h3 class="product-card-title"><a href="{{ other_product.get_href }}">{{ other_product.name }}</a>
+                                </h3>
+                                <div class="product-card-price">
+                                     {% if other_product.discount.discount_active %}
+                                    <span class="card-price-regular">{{ other_product.discount.discount_price }} BYN</span>
+                                    <span class="card-price-compare text-decoration-line-through">{{ other_product.discount.price_no_discount }} BYN</span>
+                                    {% else %}
+                                    <span class="card-price-regular">{{ other_product.price }} BYN</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                        </div>
+                        <div class="activate-arrows show-arrows-always article-arrows arrows-white"></div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- you may also lik end -->
+        </main>
+
+{% endblock %}
+<!-- БЛОК КОНТЕНТА end -->

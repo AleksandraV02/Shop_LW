@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>Избранное</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+<!-- БЛОК КОНТЕНТА start -->
+{% block content %}
+    <div class="body-wrapper">
+        <!-- breadcrumb start -->
+        <div class="breadcrumb">
+            <div class="container">
+                <ul class="list-unstyled d-flex align-items-center m-0">
+                    <li><a href="/">Главная</a></li>
+                    <li>
+                        <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g opacity="0.4">
+                                <path
+                                    d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                                    fill="#000" />
+                            </g>
+                        </svg>
+                    </li>
+                    <li>Избранное</li>
+                </ul>
+            </div>
+        </div>
+        <!-- breadcrumb end -->
+        <main id="MainContent" class="content-for-layout">
+            <div class="wishlist-page mt-100">
+                <div class="wishlist-page-inner">
+                    <div class="container">
+                        <div class="section-header d-flex align-items-center justify-content-between flex-wrap">
+                            <h2 class="section-heading">Избранное</h2>
+                        </div>
+                        <hr>
+                        {% if wishlist.products.all %}
+                                <div class="row">
+                                    {% for product in wishlist.products.all %}
+                                        <div class="col-lg-3 col-md-6 col-6" data-aos="fade-up" data-aos-duration="700">
+                                            <div class="product-card">
+                                                <div class="product-card-img">
+                                                    <a class="hover-switch" href="{{ product.get_href }}">
+                                                        <img class="primary-img" src="{{ product.main_image.url}}" alt="product-img">
+                                                    </a>
+
+                                                        <div class="product-badge">
+                                                            {% if product.discount.discount_active %}
+                                                                <span class="badge-label badge-percentage rounded">-{{ product.discount.discount }}%</span>
+                                                            {% endif %}
+                                                        </div>
+
+                                                    <div class="product-card-action product-card-action-2 justify-content-center">
+
+                                                        <a href="{% url 'remove_from_wishlist' product.id %}" class="action-card action-wishlist">
+                                                           <svg class="icon icon-wishlist" width="30" height="25" style="color: red" xmlns="http://www.w3.org/2000/svg"
+                                                                viewBox="0 0 500 550">
+                                                                   <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" fill="red">
+                                                                   </path>
+                                                           </svg>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div class="product-card-details text-center">
+                                                    <h3 class="product-card-title">
+                                                        <a href="{{ product.get_href }}">{{ product.name }}</a>
+                                                    </h3>
+                                                    <div class="product-card-price">
+                                                        {% if product.discount.discount_active %}
+                                                            <span class="card-price-regular">{{ product.discount.discount_price }} BYN</span>
+                                                            <span class="card-price-compare text-decoration-line-through">{{ product.discount.price_no_discount }} BYN</span>
+                                                        {% else %}
+                                                            <span class="card-price-regular">{{ product.price }} BYN</span>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p>Нет избранных товаров.</p>
+                            {% endif %}
+                    </div>
+                </div>            
+            </div>            
+        </main>
+    </div>
+{% endblock %}
+<!-- БЛОК КОНТЕНТА end -->

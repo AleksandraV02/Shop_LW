@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>Оформление заказа</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+<!-- БЛОК КОНТЕНТА start -->
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb">
+    <div class="container">
+        <ul class="list-unstyled d-flex align-items-center m-0">
+            <li><a href="/">Главная страница</a></li>
+            <li>
+                <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                        <path
+                            d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                            fill="#000" />
+                    </g>
+                </svg>
+            </li>
+            <li><a href="{% url 'cart' %}">Корзина</a></li>
+            <li>
+                <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                        <path
+                            d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                            fill="#000" />
+                    </g>
+                </svg>
+            </li>
+            <li>Заказ</li>
+        </ul>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+    <main id="MainContent" class="content-for-layout">
+        <div class="checkout-page mt-100">
+            <div class="container">
+                <div class="checkout-page-wrapper">
+                    <div class="row">
+                        <div class="col-xl-9 col-lg-8 col-md-12 col-12">
+                            <div class="section-header mb-3">
+                                <h2 class="section-heading">Оформление заказа</h2>
+                            </div>
+
+                            <div class="shipping-address-area">
+                                <h2 class="shipping-address-heading pb-1">Адрес доставки</h2>
+                                <div class="shipping-address-form-wrapper">
+                                    <form action="#" class="shipping-address-form common-form" method="post">{% csrf_token %}
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Имя</label>
+                                                    <input type="text" />
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Фамилия</label>
+                                                    <input type="text" />
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Email</label>
+                                                    <input type="email" />
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Телефон</label>
+                                                    <input type="text" />
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Область</label>
+                                                    <select class="form-select">
+                                                        <option value="min">Минская</option>
+                                                        <option value="mog">Могилевская</option>
+                                                        <option value="gr">Гродненская</option>
+                                                        <option value="br">Брестская</option>
+                                                        <option value="gom">Гомельская</option>
+                                                        <option value="vit">Витебская</option>
+                                                    </select>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Район</label>
+                                                    <select class="form-select">
+                                                        <option selected="minski">Минский</option>
+                                                    </select>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Город / населенный пункт</label>
+                                                    <select class="form-select">
+                                                        <option value="m">Минск</option>
+                                                        <option value="mo">Могилев</option>
+                                                        <option value="g">Гродно</option>
+                                                        <option value="b">Брест</option>
+                                                        <option value="gm">Гомель</option>
+                                                        <option value="v">Витебск</option>
+                                                    </select>
+                                                </fieldset>
+                                            </div>
+                                            <div class="col-lg-6 col-md-12 col-12">
+                                                <fieldset>
+                                                    <label class="label">Адрес</label>
+                                                    <input type="text" />
+                                                </fieldset>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="shipping-address-area billing-area">
+                                <div class="minicart-btn-area d-flex align-items-center justify-content-between flex-wrap">
+                                    <a href="{% url 'cart' %}" class="checkout-page-btn minicart-btn btn-secondary">ВЕРНУТЬСЯ В КОРЗИНУ</a>
+                                    <a href="checkout.html" class="checkout-page-btn minicart-btn btn-primary">ОФОРМИТЬ ЗАКАЗ</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-lg-4 col-md-12 col-12">
+                            <div class="cart-total-area checkout-summary-area">
+                                <h4 class="d-none d-lg-block mb-0 text-center heading_24 mb-4">Товары в корзине</h4>
+                                    {{ request.session.cart.products }}
+                                {% for product_in_cart in products_in_cart %}
+                                <div class="minicart-item d-flex">
+                                    <div class="mini-img-wrapper">
+                                        <img class="mini-img" src="{{ product_in_cart.product.main_image.url}}" alt="img">
+                                    </div>
+                                    <div class="product-info">
+                                        <h2 class="product-title"><a href="{{ product_in_cart.product.get_href }}">{{ product_in_cart.product.name }}</a></h2>
+                                        <p class="product-vendor">
+                                            <span class="product-price">{{ product_in_cart.price_per_item }}</span> BYN x
+                                             <span class="product-in-cart-nmb">{{ product_in_cart.nmb }}</span>
+                                            <br>
+                                             <span class="total-product-in-cart-amount" style="display:none;">{{ product_in_cart.total_price_cart }}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+                                <div class="cart-total-box mt-4 bg-transparent p-0">
+                                    <hr/>
+                                    <div class="subtotal-item discount-box">
+                                        <h4 class="subtotal-title">Общая стоимость: </h4>
+                                          <span id="total_order_amount"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+<!-- БЛОК КОНТЕНТА end -->
+

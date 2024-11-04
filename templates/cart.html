@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>Корзина</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+{% block content %}
+<!-- breadcrumb start -->
+<div class="breadcrumb">
+    <div class="container">
+        <ul class="list-unstyled d-flex align-items-center m-0">
+            <li><a href="/">Главная</a></li>
+            <li>
+                <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g opacity="0.4">
+                        <path
+                            d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                            fill="#000" />
+                    </g>
+                </svg>
+            </li>
+            <li>Корзина</li>
+        </ul>
+    </div>
+</div>
+<!-- breadcrumb end -->
+
+<main id="MainContent" class="content-for-layout">
+    <div class="checkout-page mt-100">
+            <div class="container">
+                 {% if products_in_cart.all %}
+
+                <div class="checkout-page-wrapper">
+                    <div class="row">
+
+                        {{ request.session.cart.products }}
+
+                        <form class="shipping-address-form common-form" id="form_buying_product" method="POST" action="{% url 'cart_adding' %}">
+                            {% csrf_token %}
+
+                                <div class="col-xl-12 col-lg-8 col-md-12 col-12">
+                                     <div class="section-header mb-3">
+                                        <h2 class="section-heading">Оформление заказа</h2>
+                                    </div>
+                                    <div class="shipping-address-area">
+                                        <h1 class="shipping-address-heading pb-1">Адрес доставки:</h1>
+                                        <div class="shipping-address-form-wrapper">
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Имя</label>
+                                                            <input type="text" name="{{ form.name.html_name }}" value="{{ request.POST.name }}">
+                                                        </fieldset>
+                                                    </div>
+
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Фамилия</label>
+                                                            <input type="text" name="last_name">
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Email</label>
+                                                            <input type="email" name="email">
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Телефон</label>
+                                                            <input type="text" name="{{ form.phone.html_name }}" value="{{ request.POST.phone }}">
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Область</label>
+                                                            <select class="form-select">
+                                                                <option value="min">Минская</option>
+                                                                <option value="mog">Могилевская</option>
+                                                                <option value="gr">Гродненская</option>
+                                                                <option value="br">Брестская</option>
+                                                                <option value="gom">Гомельская</option>
+                                                                <option value="vit">Витебская</option>
+                                                            </select>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Район</label>
+                                                            <select class="form-select">
+                                                                <option selected="">Минский</option>
+                                                            </select>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Город / населенный пункт</label>
+                                                            <select class="form-select">
+                                                                <option value="m">Минск</option>
+                                                                <option value="mo">Могилев</option>
+                                                                <option value="g">Гродно</option>
+                                                                <option value="b">Брест</option>
+                                                                <option value="gm">Гомель</option>
+                                                                <option value="v">Витебск</option>
+                                                            </select>
+                                                        </fieldset>
+                                                    </div>
+                                                    <div class="col-lg-6 col-md-12 col-12">
+                                                        <fieldset>
+                                                            <label class="label">Адрес</label>
+                                                            <input type="text" name="address">
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="cart-items col-lg-12 col-md-12 col-12 mt-5">
+                                    <table class="cart-table">
+                                        <thead>
+                                            <tr>
+                                                <th class="cart-caption heading_18 col-2">Товар:</th>
+                                                <th class="cart-caption heading_18 col-4"></th>
+                                                <th class="cart-caption heading_18 col-2">Цена:</th>
+                                                <th class="cart-caption text-center heading_18 d-none d-md-table-cell col-1">Количество:</th>
+                                                <th class="cart-caption text-end heading_18 col-2">Итого:</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for product_in_cart in products_in_cart %}
+                                            <tr class="cart-item" data-product_id="{{ product_in_cart.id }}">
+                                                <td class="cart-item-media">
+                                                    <div class="mini-img-wrapper">
+                                                        <img class="mini-img" src="{{ product_in_cart.product.main_image.url }}" alt="img">
+                                                    </div>
+                                                </td>
+                                                <td class="cart-item-details">
+                                                    <h2 class="product-title">
+                                                        <a href="{{ product_in_cart.product.get_href }}">{{ product_in_cart.product.name }}</a>
+                                                    </h2>
+                                                    <p class="product-vendor">{{ product_in_cart.product.category }} / {{ product_in_cart.product.collection }}</p>
+                                                </td>
+                                                <td class="cart-item-price">
+                                                    <span class="product-price">
+                                                        {{ product_in_cart.price_per_item }}
+                                                    </span>
+                                                </td>
+                                                <td class="cart-item-quantity">
+                                                    <div class="quantity d-flex align-items-center justify-content-between">
+                                                        <input value="{{ product_in_cart.nmb }}" type="number" min="1"
+                                                               class="form-control product-in-cart-nmb"
+                                                               name="product_in_cart_{{ product_in_cart.id }}">
+                                                    </div>
+                                                    <a href="#" class="delete-item product-remove mt-2" data-product_id="{{ product_in_cart.id }}">Удалить</a>
+                                                </td>
+                                                <td class="cart-item-price text-end">
+                                                    <span class="total-product-in-cart-amount">
+                                                        {{ product_in_cart.price_cart }}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-12 col-md-12 col-12">
+                                    <div class="cart-total-area">
+                                        <div class="cart-total-box mt-5">
+                                            <div class="subtotal-item discount-box">
+                                                <h3>Итоговая цена:
+                                                     <span id="total_order_amount"></span>
+                                                </h3>
+                                            </div>
+                                            <p class="shipping_text">* Итоговая цена указана без учета доставки</p>
+                                        </div>
+                                    </div>
+                                    </div>
+                                <div class="shipping-address-area billing-area">
+                                    <div class="minicart-btn-area d-flex align-items-center justify-content-between flex-wrap">
+                                            <a href="{% url 'cart' %}" class="checkout-page-btn minicart-btn btn-secondary">ВЕРНУТЬСЯ В КОРЗИНУ</a>
+                                            <button type="submit" class="checkout-page-btn minicart-btn btn-primary">ОФОРМИТЬ ЗАКАЗ</button>
+                                        </div>
+                                </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="cart-page-wrapper">
+                     {% else %}
+                        <h2>В корзине пусто<span>&#128125</span></h2>
+                        <h6><a href="{% url 'home' %}" class="nav-link-sub nav-text-sub">Перейти на главную</a></h6>
+                    {% endif %}
+                </div>
+
+            </div>
+    </div>
+</main>
+
+{% endblock %}

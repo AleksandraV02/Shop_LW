@@ -1,0 +1,209 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>Распродажа</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+<!-- БЛОК КОНТЕНТА start -->
+{% block content %}
+    <!-- breadcrumb start -->
+    <div class="breadcrumb">
+        <div class="container">
+            <ul class="list-unstyled d-flex align-items-center m-0">
+                <li><a href="/">Главная</a></li>
+                <li>
+                    <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <g opacity="0.4">
+                            <path
+                                d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                                fill="#000" />
+                        </g>
+                    </svg>
+                </li>
+                <li>Распродажа</li>
+            </ul>
+        </div>
+    </div>
+    <!-- breadcrumb end -->
+
+    <main id="MainContent" class="content-for-layout">
+        <div class="collection mt-100">
+            <div class="container">
+                <div class="row">
+                    <!-- product area start -->
+                    <div class="col-lg-12 col-md-12 col-12">
+                        <div class="filter-sort-wrapper d-flex justify-content-between flex-wrap">
+                            <div class="collection-title-wrap d-flex align-items-end">
+                                <h2 class="collection-title heading_24 mb-0">Товары со скидкой</h2>
+                            </div>
+                            <div class="filter-sorting">
+                                <div class="collection-sorting position-relative d-none d-lg-block">
+                                    <div
+                                        class="sorting-header text_16 d-flex align-items-center justify-content-end">
+                                        <span class="sorting-title me-2">Sort by:</span>
+                                        <span class="active-sorting">Featured</span>
+                                        <span class="sorting-icon">
+                                            <svg class="icon icon-down" xmlns="http://www.w3.org/2000/svg"
+                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" class="feather feather-chevron-down">
+                                                <polyline points="6 9 12 15 18 9"></polyline>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <ul class="sorting-lists list-unstyled m-0">
+                                        <li><a href="#" class="text_14">Featured</a></li>
+                                        <li><a href="#" class="text_14">Best Selling</a></li>
+                                        <li><a href="#" class="text_14">Alphabetically, A-Z</a></li>
+                                        <li><a href="#" class="text_14">Alphabetically, Z-A</a></li>
+                                        <li><a href="#" class="text_14">Price, low to high</a></li>
+                                        <li><a href="#" class="text_14">Price, high to low</a></li>
+                                        <li><a href="#" class="text_14">Date, old to new</a></li>
+                                        <li><a href="#" class="text_14">Date, new to old</a></li>
+                                    </ul>
+                                </div>
+                                <div class="filter-drawer-trigger mobile-filter d-flex align-items-center d-lg-none">
+                                    <span class="mobile-filter-icon me-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-filter">
+                                            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                                        </svg>
+                                    </span>
+                                    <span class="mobile-filter-heading">Sorting</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="collection-product-container">
+                            <div class="row">
+                                {% for product_sale in products_sale %}
+                                <div class="col-lg-3 col-md-6 col-6" data-aos="fade-up" data-aos-duration="700">
+                                    <div class="product-card text-center">
+                                        <div class="product-card-img">
+                                            <a class="hover-switch" href="{{ product_sale.get_href }}">
+                                                <img class="primary-img" src="{{ product_sale.main_image.url }}"
+                                                    alt="product-img">
+                                            </a>
+
+                                            <div class="product-badge">
+                                                <span class="badge-label badge-percentage rounded">-{{ product_sale.discount.discount }}%</span>
+                                            </div>
+
+                                            <div
+                                                class="product-card-action product-card-action-2 justify-content-center">
+                                                <a href="{% url 'add_to_wishlist' product_sale.id %}" class="action-card action-wishlist">
+                                                    {% if product_sale in user.wishlist.products.all %}
+                                                        <svg class="icon icon-wishlist" width="30" height="25" style="color: red" xmlns="http://www.w3.org/2000/svg"
+                                                    viewBox="0 0 500 550">
+                                                   <path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z" fill="red">
+                                                   </path>
+                                               </svg>
+                                            {% else %}
+                                               <svg class="icon icon-wishlist"
+                                                    viewBox="0 0 27 25" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M6.96429 0.000183105C3.12305 0.000183105 0 3.10686 0 6.84843C0 8.15388 0.602121 9.28455 1.16071 10.1014C1.71931 10.9181 2.29241 11.4425 2.29241 11.4425L12.3326 21.3439L13 22.0002L13.6674 21.3439L23.7076 11.4425C23.7076 11.4425 26 9.45576 26 6.84843C26 3.10686 22.877 0.000183105 19.0357 0.000183105C15.8474 0.000183105 13.7944 1.88702 13 2.68241C12.2056 1.88702 10.1526 0.000183105 6.96429 0.000183105ZM6.96429 1.82638C9.73912 1.82638 12.3036 4.48008 12.3036 4.48008L13 5.25051L13.6964 4.48008C13.6964 4.48008 16.2609 1.82638 19.0357 1.82638C21.8613 1.82638 24.1429 4.10557 24.1429 6.84843C24.1429 8.25732 22.4018 10.1584 22.4018 10.1584L13 19.4036L3.59821 10.1584C3.59821 10.1584 3.14844 9.73397 2.69866 9.07411C2.24888 8.41426 1.85714 7.55466 1.85714 6.84843C1.85714 4.10557 4.13867 1.82638 6.96429 1.82638Z"
+                                                        fill="#00234D" />
+                                               </svg>
+                                                    {% endif %}
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-card-details">
+                                            <h3 class="product-card-title">
+                                                <a href="{{ product_sale.get_href }}">{{ product_sale.name }}</a>
+                                            </h3>
+                                            <div class="product-card-price">
+                                                <span class="card-price-regular">{{ product_sale.discount.discount_price }} BYN</span>
+                                                <span
+                                                    class="card-price-compare text-decoration-line-through">{{ product_sale.discount.price_no_discount }} BYN</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor%}
+                            </div>
+                        </div>
+                        <div class="pagination justify-content-center mt-100">
+                            <nav>
+                                <ul class="pagination m-0 d-flex align-items-center">
+                                    <li class="item disabled">
+                                        <a class="link">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-left">
+                                                <polyline points="15 18 9 12 15 6"></polyline>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                    <li class="item"><a class="link" href="#">1</a></li>
+                                    <li class="item active"><a class="link" href="#">2</a></li>
+                                    <li class="item"><a class="link" href="#">3</a></li>
+                                    <li class="item"><a class="link" href="#">4</a></li>
+                                    <li class="item">
+                                        <a class="link" href="#">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                class="icon icon-right">
+                                                <polyline points="9 18 15 12 9 6"></polyline>
+                                            </svg>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- product area end -->
+
+                    <!-- sidebar start -->
+                    <div class="col-lg-3 col-md-12 col-12">
+                        <div class="collection-filter filter-drawer">
+                            <div class="filter-widget d-lg-none d-flex align-items-center justify-content-between">
+                                <h4 class="heading_24">Sorting By</h4>
+                                <button type="button" class="btn-close text-reset filter-drawer-trigger d-lg-none"></button>
+                            </div>
+
+                            <div class="filter-widget d-lg-none">
+                                <div class="filter-header faq-heading heading_18 d-flex align-items-center justify-content-between border-bottom"
+                                    data-bs-toggle="collapse" data-bs-target="#filter-mobile-sort">
+                                    <span>
+                                        <span class="sorting-title me-2">Sort by:</span>
+                                        <span class="active-sorting">Featured</span>
+                                    </span>
+                                    <span class="faq-heading-icon">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-down">
+                                            <polyline points="6 9 12 15 18 9"></polyline>
+                                        </svg>
+                                    </span>
+                                </div>
+                                <div id="filter-mobile-sort" class="accordion-collapse collapse show">
+                                    <ul class="sorting-lists-mobile list-unstyled m-0">
+                                        <li><a href="#" class="text_14">Featured</a></li>
+                                        <li><a href="#" class="text_14">Best Selling</a></li>
+                                        <li><a href="#" class="text_14">Alphabetically, A-Z</a></li>
+                                        <li><a href="#" class="text_14">Alphabetically, Z-A</a></li>
+                                        <li><a href="#" class="text_14">Price, low to high</a></li>
+                                        <li><a href="#" class="text_14">Price, high to low</a></li>
+                                        <li><a href="#" class="text_14">Date, old to new</a></li>
+                                        <li><a href="#" class="text_14">Date, new to old</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- sidebar end -->
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+<!-- БЛОК КОНТЕНТА end -->

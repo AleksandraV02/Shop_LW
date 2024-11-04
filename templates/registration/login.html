@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+<!-- БЛОК ЗАГОЛОВОК start -->
+{% block title %}
+    <title>Вход</title>
+{% endblock %}
+<!-- БЛОК ЗАГОЛОВОК end -->
+
+<!-- БЛОК КОНТЕНТА start -->
+{% block content %}
+
+        <!-- breadcrumb start -->
+        <div class="breadcrumb">
+            <div class="container">
+                <ul class="list-unstyled d-flex align-items-center m-0">
+                    <li><a href="{% url 'home' %}">Главная страница</a></li>
+                    <li>
+                        <svg class="icon icon-breadcrumb" width="64" height="64" viewBox="0 0 64 64" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <g opacity="0.4">
+                                <path
+                                    d="M25.9375 8.5625L23.0625 11.4375L43.625 32L23.0625 52.5625L25.9375 55.4375L47.9375 33.4375L49.3125 32L47.9375 30.5625L25.9375 8.5625Z"
+                                    fill="#000" />
+                            </g>
+                        </svg>
+                    </li>
+                    <li>Вход</li>
+                </ul>
+            </div>
+        </div>
+        <!-- breadcrumb end -->
+
+        {% if form.error %}
+            <p>Error</p>
+        {% endif %}
+
+        <main id="MainContent" class="content-for-layout">
+            <div class="login-page mt-100">
+                <div class="container">
+                    <form method="POST" action="#" class="login-form common-form mx-auto">
+                        {% csrf_token %}
+                        <div class="section-header mb-3">
+                            <h2 class="section-heading text-center">Вход</h2>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <fieldset>
+                                    <label class="label">Логин:</label>
+                                    {{ form.username }}
+                                </fieldset>
+                            </div>
+                            <div class="col-12">
+                                <fieldset>
+                                    <label class="label">Пароль:</label>
+                                    {{ form.password }}
+                                </fieldset>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <a href="{% url 'password_reset' %}" class="text_14 d-block">Забыли пароль?</a>
+                                <button type="submit" class="btn-primary d-block mt-4 btn-signin">ВХОД</button>
+                                <a href="{% url 'registration' %}" class="btn-secondary mt-2 btn-signin">СОЗДАТЬ АККАУНТ</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>            
+        </main>
+        
+
+{% endblock %}
